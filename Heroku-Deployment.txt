@@ -1,0 +1,11 @@
+To run the server on Heroku hosting, we need the following configuration:
+
+1. make sure that the server code accept port number from process.env.PORT.
+2. add engines :{ node: 'version number', npm: 'version-number'} to package.json so that Heroku knows which node env
+   to use to work with our codes.
+3. specify a start script to let Heroku knows how to start the server.
+4. create an .gitignore file to avoid committing installed dependencies
+5. create Heroku account and install it.
+6. Heroku login and use cred and then Heroku create to create a new project
+7. Heroku will then generate a new remote repo on Heroku for us to push our prod code to.
+8. Push code to this new remote
