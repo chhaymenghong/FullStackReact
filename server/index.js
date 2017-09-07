@@ -1,4 +1,4 @@
-const cookieSession = require('cookie-session'); // give us access to cookie
+const cookieSession = require('cookie-session'); // Handle cookie session for us
 const passport = require('passport');
 
 
@@ -21,14 +21,15 @@ mongoose.connect(configKey.mongooseUri);
 const express = require('express');
 const app = express();
 
-// Tell express to use cookieSession to handle session
+// Tell express to use cookieSession as a middleware to handle session
+// With this, any http request and response will go through cookieSession middleware
 app.use(
     cookieSession({
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms ( cookie session age )
         keys: [configKey.cookieKey] // used for encrypting the cookie ( if multiple, express will pick one randomly )
     })
 );
-// Tell passport to use cookie to handle authentication
+// Another middleware. Tell passport to use cookie to handle authentication
 app.use(passport.initialize());
 app.use(passport.session());
 

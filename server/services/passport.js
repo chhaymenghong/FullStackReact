@@ -45,5 +45,3 @@ passport.deserializeUser( (id, done) => {
     User.findById(id)
         .then(user => done( null, user));
 });
-
-// Tell passport that it needs to use cookie to keep track of the currently signed in user
