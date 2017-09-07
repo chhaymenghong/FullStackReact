@@ -30,3 +30,20 @@ passport.use(
                 });
         } )
 );
+
+// Once we get the user instance from the db ( this happens after the authentication process above finishes )
+// We ask passport to use user.id ( not googleId ), created by MongoDb, to send this info to the client
+// by setting it in the cookie, so that future requests from the client will have this information in the cookie
+// set automatically by the browser
+passport.serializeUser( (user, done) => {
+    done(null, user.id);
+});
+
+// Client sends more requests to the server after all the auth process. Passport will use the cookie info
+// in the request to create or query for the User instance associated with that info
+passport.deserializeUser( (id, done) => {
+    User.findById(id)
+        .then(user => done( null, user));
+});
+
+// Tell passport that it needs to use cookie to keep track of the currently signed in user
