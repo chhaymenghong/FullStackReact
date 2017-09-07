@@ -12,6 +12,12 @@ module.exports = (app) => {
 // to get more information about the user
     app.get('/auth/google/callback', passport.authenticate('google'));
     app.get('/api/current_user', (req, res) => {
-       res.send(req.user);
+       res.send(req.user); // passport attaches this user object to req object automatically through the deserialization process
     });
+    app.get('/api/logout', (req, res) => {
+        // passport attached a lot of functionality to req object including this function
+        // this clear the cookie in the request back to the user
+        req.logout();
+        res.send(req.user); // send back an ack ( this is now an empty object )
+    })
 };
