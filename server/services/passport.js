@@ -10,7 +10,8 @@ passport.use(
         {
             clientID: keys.googleClientID,
             clientSecret: keys.googleClientSecret,
-            callbackURL: '/auth/google/callback'
+            callbackURL: '/auth/google/callback',
+            proxy: true // tell googleStrategy to trust any proxies before it reaches our codes and calculate the right path ( https )
         },
 
         // Get executed when a user is actually executed. we can store this on the database
