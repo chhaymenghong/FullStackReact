@@ -11,4 +11,7 @@ module.exports = (app) => {
 // Handle callback from Google OAuth. Google will give us a code that can be sent back to it
 // to get more information about the user
     app.get('/auth/google/callback', passport.authenticate('google'));
+    app.get('/api/current_user', (req, res) => {
+       res.send(req.user);
+    });
 };
