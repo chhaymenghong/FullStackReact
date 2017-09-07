@@ -2,7 +2,7 @@
 const passport = require('passport');
 
 module.exports = (app) => {
-    // Use google strategy to handle this authentication. ( google is an identifier built into GoogleStrategy )
+// Use google strategy to handle this authentication. ( google is an identifier built into GoogleStrategy )
 // Also we are asking for user's profile and emails.
     app.get('/auth/google', passport.authenticate('google', {
         scope: ['profile', 'email']
