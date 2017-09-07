@@ -1,3 +1,7 @@
+const cookieSession = require('cookie-session'); // give us access to cookie
+const passport = require('passport');
+
+
 // Get Config Key
 const configKey = require('./config/keys');
 
@@ -16,6 +20,18 @@ mongoose.connect(configKey.mongooseUri);
 // node hasn't implemented the "import" feature belong to es6 yet
 const express = require('express');
 const app = express();
+
+// Tell express to use cookieSession to handle session
+app.use(
+    cookieSession({
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms ( cookie session age )
+        keys: [configKey.cookieKey] // used for encrypting the cookie ( if multiple, express will pick one randomly )
+    })
+);
+// Tell passport to use cookie to handle authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
 require('./routes/authRoutes')(app);
 
 app.get('/', (req, res) => {
