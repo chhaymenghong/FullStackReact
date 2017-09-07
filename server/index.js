@@ -1,11 +1,38 @@
-// Require belongs to commonjs spec that Node uses to import modules
-// node hasn't implemented the "import" feature belong to es6 yet
-const express = require('express');
+const cookieSession = require('cookie-session'); // Handle cookie session for us
+const passport = require('passport');
+
+
+// Get Config Key
+const configKey = require('./config/keys');
+
+// Load User collection into mongoose
+require('./models/User');
 
 // Run the passport configuration
 require('./services/passport');
 
+// Add DB connection
+const mongoose = require('mongoose');
+mongoose.connect(configKey.mongooseUri);
+
+// Bootstrap app
+// Require belongs to commonjs spec that Node uses to import modules
+// node hasn't implemented the "import" feature belong to es6 yet
+const express = require('express');
 const app = express();
+
+// Tell express to use cookieSession as a middleware to handle session
+// With this, any http request and response will go through cookieSession middleware
+app.use(
+    cookieSession({
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms ( cookie session age )
+        keys: [configKey.cookieKey] // used for encrypting the cookie ( if multiple, express will pick one randomly )
+    })
+);
+// Another middleware. Tell passport to use cookie to handle authentication
+app.use(passport.initialize());
+app.use(passport.session());
+
 require('./routes/authRoutes')(app);
 
 app.get('/', (req, res) => {
